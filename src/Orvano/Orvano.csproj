@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- The Orvano .NET SDK (spec 0001): server and both operations. Generated/ comes from SdkGen;
+       the rest is the handwritten runtime. One System.Text.Json source generated context serves
+       both targets. -->
+  <PropertyGroup>
+    <TargetFramework />
+    <TargetFrameworks>net10.0;netstandard2.0</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>Orvano</RootNamespace>
+    <PackageId>Orvano</PackageId>
+    <Description>The Orvano SDK for .NET: server code for Orvano, the open source backend you host yourself.</Description>
+    <Authors>Orvano</Authors>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://orvano.dev</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/orvanohq/orvano-dotnet</RepositoryUrl>
+    <PackageTags>orvano;backend;baas;auth;postgres</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <IsTrimmable Condition="'$(TargetFramework)' == 'net10.0'">true</IsTrimmable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" />
+    <PackageReference Include="System.Text.Json" />
+  </ItemGroup>
+
+  <!-- The scenario runner's generated test services call the internal SendAsync with their own
+       JSON context, so test operations never ship in this package (spec 0001, AC-18). -->
+  <ItemGroup>
+    <InternalsVisibleTo Include="Orvano.Scenarios" />
+  </ItemGroup>
+
+</Project>
